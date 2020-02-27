@@ -73,13 +73,15 @@ public class MainActivity extends AppCompatActivity {
         latitude = getLatitude();
         declination = getDeclination();
         if(latitude<-90 || latitude > 90 || declination<-23.5 || declination>23.5) {
+            latitudeText.setText("");
             latitudeText.setHint("-90 to 90");
+            declinationText.setText("");
             declinationText.setHint("-23.5 to 23.5");
         }else {
             noonAngle = sunAngleAtNoon();
             shadow = shadowLength();
-            angleAtNoon.setText("" + noonAngle + Character.toString((char) 176));
-            shadowLength.setText("" + round(shadow, 1) + " cm");//rounds to a tenth
+            angleAtNoon.setText(noonAngle + Character.toString((char) 176));
+            shadowLength.setText(shadow + " cm");//rounds to a tenth
         }
     }
 //this helper function i used from https://www.baeldung.com/java-round-decimal-number
@@ -92,19 +94,20 @@ public class MainActivity extends AppCompatActivity {
     }
     //this function is unfinished!!!
     private double shadowLength(){
-        //s = 100/tan(noonAngle
         double radianNoonAngle = Math.toRadians(noonAngle);
         double s = 100/Math.tan(radianNoonAngle);
-        //degrees need to be in radians
-        //(degrees)*math.pi()/180 == degrees to radians
-        //radians * 180 / mathpi() = radians to degrees
-        //1 radian is about 57.3 degrees
+        s = round(shadow, 1);
+        if(shadow<0)
+            s = 0;
+
         return s;
     }
 
     private double sunAngleAtNoon(){
-       // double angleAtNoon = latitude + declination;
         double angleAtNoon = 90 - Math.abs(latitude - declination);
+        if (angleAtNoon< 0)
+            angleAtNoon = 0;
+
         return angleAtNoon;
     }
 
@@ -114,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
             String text = latitudeText.getText().toString();
             latitude = Double.valueOf(text);
         }catch(Exception e) {
-            latitude = 37.0;
+            latitude = 0.0;
         }
         return latitude;
     }
@@ -130,3 +133,4 @@ public class MainActivity extends AppCompatActivity {
         return declination;
     }
 }
+
