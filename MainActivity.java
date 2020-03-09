@@ -1,4 +1,4 @@
-// Nick's version as of 05 03mar 2020
+// Nick's version as of 05 03mar 2020 
 package com.example.solarnoon;
 
 import android.Manifest;
